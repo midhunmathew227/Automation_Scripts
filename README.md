@@ -10,7 +10,7 @@ I'm a movie enthusiast. I have a crave for first day shows.
 Usually around the time a movie releases, I have to check BMS app every 10 minutes to look whether the bookings have been started.
 I got tired of that. BMS app dont have an alert system, which is a good thing or else it will give everyone an equal chance to nab best seats.
 
-But as a matter of fact, I thought it will be nice if someone else will do this random checking for me.n't got t
+But as a matter of fact, I thought it will be nice if someone else will do this random checking for me.
 Thats why I have developed this.
 
 I haven't got the chance to test this completely.
