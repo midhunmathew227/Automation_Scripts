@@ -1,10 +1,14 @@
+import requests
+from os import path
+from time import sleep
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver import ChromeOptions
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
-import requests
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 your_name = input("\n Enter your Name : ").capitalize()
 username = input(" Enter your Telegram Username : ")
@@ -29,7 +33,13 @@ else: chosen_venue=preferred_venue
 select_language=select_language.upper()
 show_time=show_time.lower()
 
-driver = webdriver.Chrome()
+CUR_DIR = path.dirname(path.abspath(__file__))
+executable_path = path.join(CUR_DIR, 'chromedriver')
+chrome_options = ChromeOptions().add_argument("--disable-notifications")
+chrome_capa = DesiredCapabilities.CHROME
+chrome_capa["pageLoadStrategy"] = "none"
+
+driver = webdriver.Chrome(executable_path=executable_path, options=chrome_options, desired_capabilities=chrome_capa)
 
 def telegram_bot(bot_message):
     bot_message = encryption(bot_message)
@@ -49,6 +59,7 @@ def encryption(bot_message):
         bot_message = bot_message.replace(special_char[i]," ")
     return bot_message
 
+found=False
 try:
     wait = WebDriverWait(driver, 10)
     long_wait = WebDriverWait(driver, 60)
@@ -87,13 +98,16 @@ try:
 
     driver.get('https://in.bookmyshow.com')
 
-    wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Search for your city']")))
+    long_wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Search for your city']")))
+    driver.execute_script("window.stop();")
 
+    '''
     try:
         not_now = wait.until(EC.presence_of_element_located((By.XPATH, "//*[text()='Not Now']")))
         not_now.click()
     except:
         pass
+    '''
 
     select_city = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Search for your city']")))
     select_city.send_keys(city_name)
@@ -103,7 +117,6 @@ try:
     avail_break = 0
     movie_name_found=0
     print_once = 0
-    found=False
 
     while(True): 
         search_bar = wait.until(EC.presence_of_element_located((By.XPATH, "//*[text()='Search for Movies, Events, Plays, Sports and Activities']")))
@@ -111,10 +124,13 @@ try:
 
         movie_search_bar = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Search for Movies, Events, Plays, Sports and Activities']")))
         movie_search_bar.send_keys(movie_name)
-        sleep(3)
+        sleep(2)
         movie_search_bar.send_keys(Keys.ENTER)
-        
-        movie_name = long_wait.until(EC.presence_of_element_located((By.XPATH, "//div[1]/div[1]/div[2]/section[1]/div/div/div[2]/h1"))).text
+
+        movie_name = long_wait.until(EC.presence_of_element_located((By.XPATH, "//div[1]/div[1]/div[2]/section[1]/div/div/div[2]/h1")))
+        movie_name = movie_name.text
+        driver.execute_script("window.stop();")
+
         if movie_name_found==0:
             telegram_bot("Hi "+your_name+",\n\nYour Request\nCity Name : "+city_name+"\nMovie Name : "+movie_name
                     +"\nLanguage : "+chosen_language+"\nFormat : "+chosen_format+"\nShow Time : "+chosen_time
@@ -186,7 +202,7 @@ try:
                         send_message = "Select format not yet available\n\nAvailable formats :\n"
                         for x in total_format:
                             print(" ",x.text.upper())
-                            send_message = send_message + x.text.capitalize() + "\n"
+                            send_message = send_message + x.text.upper() + "\n"
                         telegram_bot(send_message)
                     if flag4==1:
                         print("\n\n >> Booking not yet available\n    We'll keep on looking")
