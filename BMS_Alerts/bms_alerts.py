@@ -116,11 +116,9 @@ while(True):
 
         while(True): 
             search_bar = long_wait.until(EC.presence_of_element_located((By.XPATH, "//span[text()='Search for Movies, Events, Plays, Sports and Activities']")))
-            print("1")
             search_bar.click()
 
             movie_search_bar = long_wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Search for Movies, Events, Plays, Sports and Activities']")))
-            print("2")
             movie_search_bar.click()
             movie_search_bar.send_keys(movie_name)
             sleep(2)
