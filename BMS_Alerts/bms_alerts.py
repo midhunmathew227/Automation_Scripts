@@ -12,15 +12,15 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-your_name = "" #input("\n Enter your Name : ").capitalize()
-username = "" #input(" Enter your Telegram Username : ")
-city_name = "Trivandrum" #input("\n Enter City name : ").capitalize()
-movie_name = "Avatar" #input(" Enter Movie name : ")
-select_language = "English" #input(" Select Language : ").capitalize()
-select_format = "IMAX 3D" #input(" Select Format (2D/3D/4DX/7D/IMAX 2D/IMAX 3D/MX4D) : ").upper()
+your_name = input("\n Enter your Name : ").capitalize()
+username = input(" Enter your Telegram Username : ")
+city_name = input("\n Enter City name : ").capitalize()
+movie_name = input(" Enter Movie name : ")
+select_language = input(" Select Language : ").capitalize()
+select_format = input(" Select Format (2D/3D/4DX/7D/IMAX 2D/IMAX 3D/MX4D) : ").upper()
 #print("\n For the following, Please press Enter key if you have no preference\n")
-show_time = "noon" #input(" Which Show-Time you prefer : ").capitalize()
-preferred_venue = "" #input(" Enter Preferred Venue (Type the full name of the Venue shown as in BMS) : ").title()
+show_time = input(" Which Show-Time you prefer : ").capitalize()
+preferred_venue = input(" Enter Preferred Venue (Type the full name of the Venue shown as in BMS) : ").title()
 
 if your_name == '': your_name="Midhun"
 if select_language == '': chosen_language="N/A" 
